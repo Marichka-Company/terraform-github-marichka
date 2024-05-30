@@ -1,0 +1,16 @@
+#  Local .terraform directories
+**/.terraform/*
+
+# .tfstate files
+*.tfstate
+*.tfstate.*
+
+# .tfvars files
+*.tfvars
+
+# os-specific
+.DS_Store
+
+# zip archives created by terraform "archive_file" data source
+terraform/files/*.zip
+plan.out
