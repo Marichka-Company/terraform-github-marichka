@@ -4,7 +4,8 @@ locals {
   ]
   admin_users = [
     "marichka-komisar",
-    "MaryAlexKom"
+    "MaryAlexKom",
+    "mariiakomisar1985"
   ]
   outside_collaborators = [
     "KomissarMaria",
