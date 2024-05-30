@@ -92,6 +92,33 @@ locals {
       ops_repo = true
     }
   }
+
+  all_repos_admin = flatten([
+    for repo in local.repos : { name : repo.name, permission = "admin" }
+    ]
+  )
+
+  argocd_staging_repo_push = {
+    name : "tsh-staging-argocd",
+    permission = "push"
+  }
+  argocd_uat_repo_push = {
+    name : "uat-argo-cd",
+    permission = "push"
+  }
+
+  # A workaround to speed up Terraform plans.
+  # Exclude repositories owned by devops from the list passed to non-ops teams,
+  # since they do not need team access to ops repos for code reviews
+  # (that is the main purpose of the `github_team_repository` resource).
+  # Experience shows developers usually request team reviews solely on dev repos.
+  ops_repos = [for repo in local.repos : repo.name if try(repo.ops_repo, false)]
+
+  all_non_ops_repos_push = flatten([
+    for repo in local.repos : { name : repo.name, permission = "push" }
+    if !contains(local.ops_repos, repo.name)
+    ]
+  )
 }
 
 module "repo" {
